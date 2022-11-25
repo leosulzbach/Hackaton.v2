@@ -20,13 +20,24 @@ export interface Register {
   data: Date;
   TipoId: number
   categoria: string;
-  CategoriaId: number
-  percentual: number;
+  Categorium: Categorium;
+  CategoriumId: number
+  percentual_ingresso: Tipo;
   descricao: string;
   valor: number;
   preco: number;
   email: string;
 
+}
+
+export interface Categorium {
+  descricao: string;
+  preco: number;
+}
+
+export interface Tipo {
+  descricao: string;
+  percentual_ingresso: number;
 }
 
 export interface ModalGerenciador {
@@ -42,11 +53,11 @@ export function Register({ data }: ModalGerenciador) {
   const [valor, setValor] = useState(data?.valor || "");
   const [tipo, setTipo] = useState([]);
   const [categoria, setCategoria] = useState([]);
-  const [CategoriaId, setCategoriaId] = useState(data?.CategoriaId || "");
+  const [CategoriumId, setCategoriumId] = useState(data?.CategoriumId || "");
   const [RegisterList, setRegisterList] = useState<Register[]>([]);
   const [filterList, setFilterList] = useState("");
 
-  const ENDPOINT = "http://177.44.248.55:3000";
+  const ENDPOINT = "http://localhost:3002";
   // useEffect(() => {
   //   axios.get<Register[]>('http://177.44.248.55/').then((response) => {
   //     setRegisterList(response.data);
@@ -75,7 +86,7 @@ export function Register({ data }: ModalGerenciador) {
 
 
 
-  const calcular = (setTipoId: any, setCategoriaId: any) => {
+  const calcular = (setTipoId: any, setCategoriumId: any) => {
     let percentual: number = 0
     let preco: number = 0
    
@@ -89,13 +100,13 @@ export function Register({ data }: ModalGerenciador) {
       percentual = 0
     } 
   
-    if (setCategoriaId === 1) {
+    if (setCategoriumId === 1) {
       preco = 200
-    } else if (setCategoriaId === 2) {
+    } else if (setCategoriumId === 2) {
       preco = 100
-    } else if (setCategoriaId === 3) {
+    } else if (setCategoriumId === 3) {
       preco = 50
-    } else if (setCategoriaId === 4) {
+    } else if (setCategoriumId === 4) {
       preco = 30
     }
   
@@ -113,7 +124,7 @@ export function Register({ data }: ModalGerenciador) {
     }
     else {
       await axios.post(`${ENDPOINT}/ingressos`, {
-        CategoriaId,
+        CategoriumId,
         TipoId,
         valor,
         data: "2022-11-22T19:05:06.250Z"
@@ -125,12 +136,12 @@ export function Register({ data }: ModalGerenciador) {
           });
           axios.get(`${ENDPOINT}/email/luiskochenborger@gmail.com`)
         }, (error) => {
-          toast.error(`Error to created tipo: ${error.response.data.error} `, {
+          toast.error(`Error to created ticket: ${error.response.data.error} `, {
             position: toast.POSITION.TOP_RIGHT,
           });
         });
 
-      setCategoriaId("");
+      setCategoriumId("");
       setTipoId("");
       setValor("");
     }
@@ -158,9 +169,6 @@ export function Register({ data }: ModalGerenciador) {
 
   const generatePDF = () => {
     window.open(`${ENDPOINT}/Register/relatorio/pdf`)
-  }
-  const reset = () => {
-    window.onreset
   }
 
   return (
@@ -194,9 +202,9 @@ export function Register({ data }: ModalGerenciador) {
               <ItemsFormContainer>
                 <label>Categoria</label>
                 <select
-                  id="CategoriaId"
-                  value={CategoriaId}
-                  onChange={(e) => setCategoriaId(e.target.value)}
+                  id="CategoriumId"
+                  value={CategoriumId}
+                  onChange={(e) => setCategoriumId(e.target.value)}
                 >
                   <option key="" value="">
                     Selecione a categoria
@@ -218,14 +226,14 @@ export function Register({ data }: ModalGerenciador) {
               </ItemsFormContainer>
               <DivButtons>
                 <Button label={"Confirmar"} type="submit"></Button>
-                <Button label={"Cancelar"} onClick={reset}></Button>
+                <Button label={"Cancelar"} type="reset"></Button>
               </DivButtons>
             </DivContainerHeader>
           </form>
         </FormProvider>
       </DivContainer>
       <DivFooter>
-        <Link to={'/'}><ButtonTransacoes label={"Últimos Ingressos"}></ButtonTransacoes></Link>
+        <Link to={'/tickets'}><ButtonTransacoes label={"Últimos Ingressos"}></ButtonTransacoes></Link>
       </DivFooter>
     </>
   )

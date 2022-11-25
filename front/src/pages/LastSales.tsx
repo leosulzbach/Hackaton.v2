@@ -7,40 +7,40 @@ import { DivButtons, DivContainer, DivContainerHeader, DivFooter, Input, ItemsFo
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { ModalTipo } from "../components/modal/ModalTipo";
-import { GerenciadorCard } from "../components/cards/GerenciadorCard";
 import { Select } from "../components/Select";
-
+import { IngressosCard } from "../components/cards/IngressoCard";
+import { Categorium, Register } from "./Register";
 const ENDPOINT = "http://localhost:3002";
 
-export interface Confirm {
+export interface LastSales {
   id: number;
-  tipo: string;
-  categoria: string;
-  CategoriaId: number;
+  Tipo: Register;
+  Categorium: Categorium;
+  CategoriumId: number;
   TipoId: number;
   value: number;
-
+  data: string;
 }
 
 export interface ModalGerenciador {
   closeModal?: Function;
-  data?: Confirm
+  data?: LastSales
   setCloseModal?: Function;
 }
-export function Confirm({ data }: ModalGerenciador) {
+export function LastSales({ data }: ModalGerenciador) {
   const [closeModal, setCloseModal] = useState(false);
   const [id, setId] = useState(data?.id || "")
   const [TipoId, setTipoId] = useState(data?.TipoId || "");
   const [valor, setValor] = useState(data?.value || "");
   const [tipo, setTipo] = useState([]);
   const [Categoria, setCategoria] = useState([]);
-  const [CategoriaId, setCategoriaId] = useState(data?.CategoriaId || "");
-  const [Confirm, setConfirm] = useState<Confirm[]>([]);
+  const [CategoriaId, setCategoriaId] = useState(data?.CategoriumId || "");
+  const [sales, setSales] = useState<LastSales[]>([]);
   const [filterList, setFilterList] = useState("");
 
   useEffect(() => {
-    axios.get<Confirm[]>('http://localhost:3002/tarefas').then((response) => {
-      setConfirm(response.data);
+    axios.get<LastSales[]>('http://localhost:3002/ingressos').then((response) => {
+      setSales(response.data);
     });
   }, [])
 
@@ -60,51 +60,28 @@ export function Confirm({ data }: ModalGerenciador) {
     window.open(`${ENDPOINT}/Confirm/relatorio/pdf`)
   }
 
-
-  const MySwal = withReactContent(Swal)
   return (
     <>
       <Header />
       <DivContainer>
-        <h2>Compra de Ingressos</h2>
+        <h2>Últimos Ingressos</h2>
         <br />
         <br />
         <br />
         <DivContainerHeader>
-          <ItemsFormContainer>
-          <label>Tipo</label>
-          <input
-            id="TipoId"
-            value={TipoId}
-            disabled={true}
-            onChange={(e) => setTipoId(e.target.value)}></input>
-          </ItemsFormContainer>
-          <ItemsFormContainer>
-          <label>Categoria</label>
-          <input
-            id="CategoriaId"
-            value={CategoriaId}
-            disabled={true}
-            onChange={(e) => setTipoId(e.target.value)}></input>
-          </ItemsFormContainer>
-          <ItemsFormContainer>
-          <label>Valor</label>
-          <input
-            type="text"
-            id="valor"
-            value={valor}
-            disabled={true}
-            onChange={(e) => setValor(e.target.value)}></input>
-          </ItemsFormContainer>
+        <DivContainer>
+        {sales.map((ingressos) => {
+          return (
+            <IngressosCard data={ingressos} setCloseModal={setCloseModal} />
+          )
+        })
+        }
+        </DivContainer>
         </DivContainerHeader>
+        </DivContainer>
         <DivButtons>
-          <Button label={"Confirmar"}></Button>
-          <Link to={'/'}><ButtonBack label={"Cancelar"}></ButtonBack></Link> 
-          </DivButtons>
-      </DivContainer>
-      <DivFooter>
-          <Link to={'/'}><ButtonTransacoes label={"Back"}></ButtonTransacoes></Link>
-      </DivFooter>
+          <Link to={'/'}><ButtonTransacoes label={"Voltar"}></ButtonTransacoes></Link>
+        </DivButtons>
     </>
   )
 }

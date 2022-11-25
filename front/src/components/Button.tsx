@@ -2,6 +2,7 @@ import { Trash } from "phosphor-react";
 import { ButtonContainer, ButtonVariants, ButtonLogout, ButtonBacking, ButtonExportPDF, ButtonExportSVG} from "./Button.styles";
 
 interface ButtonProps {
+  width?: number | string;
   variant?: ButtonVariants;
   disabled?: boolean;
   type?: "button" | "submit" | "reset" | undefined;
@@ -15,15 +16,15 @@ interface ButtonProps {
 //Ao invés de passar um className posso passar a propriedade que eu defini
 export function Button({ variant = "primary", label, fontcolor, onClick, ...rest }: ButtonProps) {
   return (
-    <ButtonContainer variant={variant} disabled={false} type={"submit"} onClick={onClick} label={" "} {...rest}>
+    <ButtonContainer width={""} variant={variant} disabled={false} type={"submit"} onClick={onClick} label={" "} {...rest}>
       {label}
     </ButtonContainer>
   );
 }
 
-export function ButtonTransacoes({ variant = "danger",label, onClick, ...rest }: ButtonProps){
+export function ButtonTransacoes({ variant = "danger",label, width, onClick, ...rest}: ButtonProps){
   return (
-    <ButtonLogout variant={variant} disabled={false} type={"submit"} onClick={onClick} label={" "} {...rest}>
+    <ButtonLogout width={""} variant={variant} disabled={false} type={"submit"} onClick={onClick} label={" "} {...rest}>
       {label}
     </ButtonLogout>
   )
@@ -31,7 +32,7 @@ export function ButtonTransacoes({ variant = "danger",label, onClick, ...rest }:
 
 export function ButtonBack({ variant = "primary",label, onClick, ...rest }: ButtonProps){
   return (
-    <ButtonBacking variant={variant} disabled={false} type={"submit"} onClick={onClick} label={" "} {...rest}>
+    <ButtonBacking width={""} variant={variant} disabled={false} type={"submit"} onClick={onClick} label={" "} {...rest}>
       {label}
     </ButtonBacking>
   )
@@ -39,14 +40,14 @@ export function ButtonBack({ variant = "primary",label, onClick, ...rest }: Butt
 
 export function ButtonPDF({ variant = "primary",label, onClick, ...rest }: ButtonProps){
   return (
-    <ButtonExportPDF variant={variant} disabled={false} type={"submit"} onClick={onClick} label={" "} {...rest}>
+    <ButtonExportPDF width={""} variant={variant} disabled={false} type={"submit"} onClick={onClick} label={" "} {...rest}>
       {label}
     </ButtonExportPDF>
   )
 }
 export function ButtonSVG({ variant = "primary",label, onClick, ...rest }: ButtonProps){
   return (
-    <ButtonExportSVG variant={variant} disabled={false} type={"submit"} onClick={onClick} label={" "} {...rest}>
+    <ButtonExportSVG width={""} variant={variant} disabled={false} type={"submit"} onClick={onClick} label={" "} {...rest}>
       {label}
     </ButtonExportSVG>
   )

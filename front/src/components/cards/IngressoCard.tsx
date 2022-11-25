@@ -1,26 +1,25 @@
 import { CardInfo } from "./CardInfo";
 import { ContentButtons, ContentContainer, DivContainer } from "./Card.styles";
-import { ButtonExit } from "../Button";
+import { ButtonBack, ButtonTransacoes } from "../Button";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import axios from "axios";
-import { Gerenciador } from "../../pages/Confirm";
-import { ModalGerenciador } from "../modal/ModalTipo";
+import { LastSales} from "../../pages/LastSales";
 
 interface CardProps {
-  data: Gerenciador;
+  data: LastSales;
   setCloseModal: Function;
 }
 
-export function GerenciadorCard({setCloseModal, data }: CardProps) {
+export function IngressosCard({setCloseModal, data }: CardProps) {
   const MySwal = withReactContent(Swal)
 
   const showSwalEdit = () => {
     setCloseModal(false);
     MySwal.fire({
       title: <strong>Editar Tarefa</strong>,
-      html: <ModalGerenciador closeModal={MySwal.close} userData={data} setCloseModal={setCloseModal} />,
+      html: <LastSales closeModal={MySwal.close} data={data} setCloseModal={setCloseModal} />,
       showConfirmButton: false,
     }).then(() => setCloseModal(true));
   };
@@ -51,7 +50,7 @@ export function GerenciadorCard({setCloseModal, data }: CardProps) {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:3002/tarefas/`+ data.id)
+        axios.delete(`http://localhost:3002/ingressos/`+ data.id)
         .then(() => setCloseModal(true)
       );
         Swal.fire(
@@ -65,23 +64,20 @@ export function GerenciadorCard({setCloseModal, data }: CardProps) {
             })
     });
     }
+    const datas = new Date(data?.data);
+    const dataFormatada = datas.toLocaleDateString('pt-BR', {timeZone: 'UTC'}) + " " + datas.toLocaleTimeString('pt-BR', {timeZone: 'UTC'});
 
   return (
     <>
       <DivContainer>
         <ContentContainer>
-          <strong>{data.id}</strong>
-
-          <CardInfo title="Tarefa Descrição" data={data?.descricao} />
-          <CardInfo title="Data Criação" data={data?.data_criacao} />
-          <CardInfo title="Data Vencimento" data={data?.data_vencimento} />
-          <CardInfo title="Prioridade" data={data?.prioridade} />
-          <CardInfo title="Situação" data={data?.situacao} />
+          <CardInfo title="Nº Ingresso" data={data?.id} />
+          <CardInfo title="Categoria" data={data?.Categorium.descricao} />
+          <CardInfo title="Tipo" data={data?.Tipo.descricao} />
+          <CardInfo title="Data" data={dataFormatada} />
           <ContentButtons>
-            <ButtonExit label="Edit" onClick={showSwalEdit}></ButtonExit>
-            <ButtonExit label="Del" onClick={deleteData}></ButtonExit>
-            <ButtonExit label="Send Mail" onClick={sendMail}></ButtonExit>
-
+            <ButtonBack label="Edit" onClick={showSwalEdit}></ButtonBack>
+            <ButtonBack label="Del" onClick={deleteData}></ButtonBack>
           </ContentButtons>
         </ContentContainer>
       </DivContainer>

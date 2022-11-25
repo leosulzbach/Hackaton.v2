@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const DivContainer = styled.div`
-    width: 80vw;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 1rem 8rem;
@@ -17,11 +18,8 @@ export const DivContainer = styled.div`
   `;
 
 export const DivFooter = styled.div`
-    width: 80vw;
+    display: flex;
     justify-content: center;
-    align-items: center;
-    margin: 1rem 8rem;
-    border-radius: 16px;
 
     h2 {
       text-align: center;

@@ -1,12 +1,12 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Register } from "../pages/Register";
-import { Confirm } from "../pages/Confirm";
+import { LastSales } from "../pages/LastSales";
 
 export function Router(){
     return(
       <Routes>
           <Route path="/" element={<Register />}></Route>
-          <Route path="/confirm" element={<Confirm />}></Route>
+          <Route path="/tickets" element={<LastSales />}></Route>
     </Routes>
     )
 }

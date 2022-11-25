@@ -7,6 +7,7 @@ interface ButtonContainerProps {
   variant: ButtonVariants;
   type: string;
   label: string;
+  width: number | string;
 }
 
 /* Nome deve ser maiúsculo, pois estamos importando COMPONENTES DE ESTILIZAÇÃO
@@ -56,17 +57,17 @@ width: 10rem;
 `;
 
 export const ButtonBacking = styled.button<ButtonContainerProps>`
-width: 10rem;
+  width: 5rem;
   height: 3rem;
   font-size: 1rem;
   border-radius: 1rem;
   border-style: none;
   cursor: pointer;
-  color: ${(props) => props.theme.fontColor};
-  background-color: #BDF24B;
+  color: ${(props) => props.theme.white};
+  background-color: #023059;
   &:focus, 
   &:hover{
-    color: ${(props) => props.theme.black};
+    color: ${(props) => props.theme.white};
     font-weight: 700;
   }
 `;
